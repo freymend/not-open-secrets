@@ -1,2 +1,3 @@
 # not-open-secrets
-The backend for Open Secrets
+
+The backend for Open Secrets. Never use this in production.
