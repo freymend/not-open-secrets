@@ -11,8 +11,8 @@
   "description": "The backend for Open Secrets",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --trace-deprecation --env-file=.env index.js",
+    "test": "NODE_ENV=test node --env-file=.env --test",
+    "start": "NODE_ENV=development node --trace-deprecation --env-file=.env index.js",
     "lint": "npx prettier . --write"
   },
   "author": "Zachary Zhang",
@@ -25,6 +25,7 @@
     "remove": "^0.1.5"
   },
   "devDependencies": {
+    "pino-pretty": "^10.2.3",
     "prettier": "3.1.0"
   }
 }

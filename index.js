@@ -2,8 +2,22 @@ import Fastify from "fastify";
 import * as argon2 from "argon2";
 import { supabase, userExists } from "./db/index.js";
 
-const app = Fastify({
-  logger: true,
+const envToLogger = {
+  development: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname",
+      },
+    },
+  },
+  production: true,
+  test: false,
+};
+
+export const app = Fastify({
+  logger: envToLogger[process.env.NODE_ENV],
 });
 
 /**
