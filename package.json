@@ -1,0 +1,30 @@
+{
+  "name": "not-open-secrets",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": "21.x"
+  },
+  "os": [
+    "linux"
+  ],
+  "description": "The backend for Open Secrets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --trace-deprecation --env-file=.env index.js",
+    "lint": "npx prettier . --write"
+  },
+  "author": "Zachary Zhang",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "argon2": "^0.31.2",
+    "fastify": "^4.24.3",
+    "remove": "^0.1.5"
+  },
+  "devDependencies": {
+    "prettier": "3.1.0"
+  }
+}
