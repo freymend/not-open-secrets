@@ -13,7 +13,8 @@
   "scripts": {
     "test": "NODE_ENV=test node --env-file=.env --test",
     "start": "NODE_ENV=development node --trace-deprecation --env-file=.env index.js",
-    "lint": "npx prettier . --write"
+    "lint": "npx prettier . --write",
+    "serve": "NODE_ENV=development node index.js"
   },
   "author": "Zachary Zhang",
   "license": "ISC",
@@ -25,6 +26,7 @@
     "remove": "^0.1.5"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.11",
     "pino-pretty": "^10.2.3",
     "prettier": "3.1.0"
   }
