@@ -1,6 +1,12 @@
 import Fastify from "fastify";
 import * as argon2 from "argon2";
-import { backup, getJournal, getPassword, registerUser, userExists } from "./db/index.js";
+import {
+  backup,
+  getJournal,
+  getPassword,
+  registerUser,
+  userExists,
+} from "./db/index.js";
 
 /**
  * @typedef {import('fastify').RouteShorthandOptions} RouteShorthandOptions
