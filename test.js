@@ -7,6 +7,9 @@ import * as argon2 from "argon2";
 const EXISTING_USER = {
   username: "test",
   password: "test",
+  journal: {
+    message: "Hello, world!",
+  },
 };
 
 const NEW_USER = {
@@ -99,6 +102,27 @@ after(async () => {
     .delete()
     .eq("username", EXISTING_USER.username);
   await supabase.from("test_data").delete().eq("username", NEW_USER.username);
+});
+
+describe("Backup", () => {
+  it("A user can backup their data", async () => {
+    const response = await app.inject({
+      method: "POST",
+      url: "/backup",
+      body: {
+        username: EXISTING_USER.username,
+        journal: EXISTING_USER.journal,
+      },
+    });
+    assert.strictEqual(response.json().backedUp !== undefined, true);
+  });
+  it("A user can restore their data", async () => {
+    const response = await app.inject({
+      method: "GET",
+      url: `/restore?username=${EXISTING_USER.username}`,
+    });
+    assert.equal(response.json().message, EXISTING_USER.journal.message);
+  });
 });
 
 app.server.close();

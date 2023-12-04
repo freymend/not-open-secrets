@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import * as argon2 from "argon2";
-import { backup, getPassword, registerUser, userExists } from "./db/index.js";
+import { backup, getJournal, getPassword, registerUser, userExists } from "./db/index.js";
 
 /**
  * @typedef {import('fastify').RouteShorthandOptions} RouteShorthandOptions
@@ -120,6 +120,7 @@ const backupOptions = {
 };
 app.post("/backup", backupOptions, async (request, reply) => {
   await backup(request.body.username, request.body.journal);
+  return { backedUp: new Date().toUTCString() };
 });
 
 /**
@@ -142,11 +143,11 @@ const restoreOptions = {
   },
 };
 app.get("/restore:username", restoreOptions, async (request, reply) => {
-  const json = JSON.stringify(data[0].journal);
+  const journal = await getJournal(request.query.username);
 
   reply.header("Content-Disposition", "attachment; filename=backup.json");
   reply.header("Content-Type", "application/json");
-  reply.send(json);
+  reply.send(JSON.stringify(journal));
 });
 
 try {
