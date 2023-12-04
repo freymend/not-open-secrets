@@ -40,6 +40,9 @@ describe("Login", () => {
     const response = await app.inject({
       method: "POST",
       url: "/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: {
         username: EXISTING_USER.username,
         password: EXISTING_USER.password,
@@ -51,6 +54,9 @@ describe("Login", () => {
     const response = await app.inject({
       method: "POST",
       url: "/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: {
         username: NONEXISTING_USER.username,
         password: NONEXISTING_USER.password,
@@ -61,6 +67,9 @@ describe("Login", () => {
   it("A user with the wrong password cannot login", async () => {
     const response = await app.inject({
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       url: "/login",
       body: {
         username: WRONG_PASSWORD.username,
@@ -76,6 +85,9 @@ describe("Register", () => {
     const response = await app.inject({
       method: "POST",
       url: "/register",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: {
         username: NEW_USER.username,
         password: NEW_USER.password,
@@ -87,6 +99,9 @@ describe("Register", () => {
     const response = await app.inject({
       method: "POST",
       url: "/register",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: {
         username: EXISTING_USER.username,
         password: EXISTING_USER.password,
@@ -108,6 +123,9 @@ describe("Backup", () => {
   it("A user can backup their data", async () => {
     const response = await app.inject({
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       url: "/backup",
       body: {
         username: EXISTING_USER.username,
@@ -119,6 +137,9 @@ describe("Backup", () => {
   it("A user can restore their data", async () => {
     const response = await app.inject({
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
       url: `/restore?username=${EXISTING_USER.username}`,
     });
     assert.equal(response.json().message, EXISTING_USER.journal.message);
