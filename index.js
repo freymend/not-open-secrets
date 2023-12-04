@@ -97,7 +97,32 @@ app.post("/login", loginOptions, async (request, reply) => {
   return { authenticated: authenticated };
 });
 
-app.post("/backup", async (request, reply) => {});
+/**
+ * @type {import('fastify').RouteShorthandOptions}
+ */
+const backupOptions = {
+  schema: {
+    body: {
+      type: "object",
+      required: ["username", "journal"],
+      properties: {
+        username: { type: "string" },
+        journal: { type: "object" },
+      },
+    },
+    response: {
+      200: {
+        type: "object",
+        properties: {
+          backedUp: { type: "boolean" },
+        },
+      },
+    },
+  },
+};
+app.post("/backup", backupOptions, async (request, reply) => {
+  await backup(request.body.username, request.body.journal);
+});
 
 /**
  * @type {import('fastify').RouteShorthandOptions}
