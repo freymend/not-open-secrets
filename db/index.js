@@ -53,13 +53,13 @@ export async function getJournal(username) {
 }
 
 /**
- * @param {string} username 
- * @param {any} journal 
+ * @param {string} username
+ * @param {any} journal
  */
 export async function backup(username, journal) {
   const { error } = await supabase
     .from("data")
-    .update({ journal: journal})
-    .eq("username", username)
-  console.log(error)
+    .update({ journal: journal })
+    .eq("username", username);
+  console.log(error);
 }

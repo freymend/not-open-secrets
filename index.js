@@ -1,6 +1,10 @@
 import Fastify from "fastify";
 import * as argon2 from "argon2";
-import { backup, getPassword, registerUser, supabase, userExists } from "./db/index.js";
+import { backup, getPassword, registerUser, userExists } from "./db/index.js";
+
+/**
+ * @typedef {import('fastify').RouteShorthandOptions} RouteShorthandOptions
+ */
 
 const envToLogger = {
   development: {
@@ -21,7 +25,7 @@ export const app = Fastify({
 });
 
 /**
- * @type {import('fastify').RouteShorthandOptions}
+ * @type {RouteShorthandOptions}
  */
 const registerOptions = {
   schema: {
@@ -50,13 +54,13 @@ app.post("/register", registerOptions, async (request, reply) => {
 
   const hashedPassword = await argon2.hash(request.body.password);
 
-  await registerUser(request.body.username, hashedPassword)
+  await registerUser(request.body.username, hashedPassword);
 
   return { registered: true };
 });
 
 /**
- * @type {import('fastify').RouteShorthandOptions}
+ * @type {RouteShorthandOptions}
  */
 const loginOptions = {
   schema: {
@@ -92,7 +96,7 @@ app.post("/login", loginOptions, async (request, reply) => {
 });
 
 /**
- * @type {import('fastify').RouteShorthandOptions}
+ * @type {RouteShorthandOptions}
  */
 const backupOptions = {
   schema: {
@@ -119,7 +123,7 @@ app.post("/backup", backupOptions, async (request, reply) => {
 });
 
 /**
- * @type {import('fastify').RouteShorthandOptions}
+ * @type {RouteShorthandOptions}
  */
 const restoreOptions = {
   schema: {
