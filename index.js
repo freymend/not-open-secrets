@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import * as argon2 from "argon2";
-import { supabase, userExists } from "./db/index.js";
+import { backup, getPassword, registerUser, supabase, userExists } from "./db/index.js";
 
 const envToLogger = {
   development: {
@@ -50,10 +50,7 @@ app.post("/register", registerOptions, async (request, reply) => {
 
   const hashedPassword = await argon2.hash(request.body.password);
 
-  await supabase.from("data").insert({
-    username: request.body.username,
-    password: hashedPassword,
-  });
+  await registerUser(request.body.username, hashedPassword)
 
   return { registered: true };
 });
@@ -82,10 +79,7 @@ const loginOptions = {
   },
 };
 app.post("/login", loginOptions, async (request, reply) => {
-  const { data } = await supabase
-    .from("data")
-    .select("password")
-    .eq("username", request.body.username);
+  const data = await getPassword(request.body.username);
 
   if (data.length === 0) {
     return { authenticated: false };
@@ -144,12 +138,6 @@ const restoreOptions = {
   },
 };
 app.get("/restore:username", restoreOptions, async (request, reply) => {
-  const { data, error } = await supabase
-    .from("data")
-    .select("journal")
-    .eq("username", request.query.username)
-    .limit(1);
-
   const json = JSON.stringify(data[0].journal);
 
   reply.header("Content-Disposition", "attachment; filename=backup.json");
