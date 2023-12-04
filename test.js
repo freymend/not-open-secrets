@@ -1,6 +1,8 @@
 import { app } from "./index.js";
-import { describe, it } from "node:test";
+import { describe, it, before, after } from "node:test";
 import assert from "node:assert";
+import { supabase } from "./db/index.js";
+import * as argon2 from "argon2";
 
 const EXISTING_USER = {
   username: "test",
@@ -21,6 +23,14 @@ const WRONG_PASSWORD = {
   username: "test",
   password: "wrongpassword",
 };
+
+before(async () => {
+  const hashedPassword = await argon2.hash(EXISTING_USER.password);
+  await supabase.from("test_data").insert({
+    username: EXISTING_USER.username,
+    password: hashedPassword,
+  });
+});
 
 describe("Login", () => {
   it("An existing user can login", async () => {
@@ -81,6 +91,14 @@ describe("Register", () => {
     });
     assert.strictEqual(response.json().registered, false);
   });
+});
+
+after(async () => {
+  await supabase
+    .from("test_data")
+    .delete()
+    .eq("username", EXISTING_USER.username);
+  await supabase.from("test_data").delete().eq("username", NEW_USER.username);
 });
 
 app.server.close();
