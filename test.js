@@ -7,9 +7,7 @@ import * as argon2 from "argon2";
 const EXISTING_USER = {
   username: "test",
   password: "test",
-  journal: {
-    message: "Hello, world!",
-  },
+  journal: [{ "title": "Hello", "text": "Test", "color": "red", "dateCreated": "Sat Dec 09 13:39:40 PST 2023" }],
 };
 
 const NEW_USER = {

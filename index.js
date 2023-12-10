@@ -111,7 +111,7 @@ const backupOptions = {
       required: ["username", "journal"],
       properties: {
         username: { type: "string" },
-        journal: { type: "object" },
+        journal: { type: "array" },
       },
     },
     response: {
